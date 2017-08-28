@@ -1,6 +1,6 @@
 # FIS Spring-Boot AMQ Producer
 
-This project contains a FIS Spring-Boot application that connects to an A-MQ xPaaS message broker and use Camel to 
+This project contains a FIS 2.0 Spring-Boot application that connects to an A-MQ xPaaS message broker and use Camel to 
 produce transacted or non-transacted messages.
 The application is exposed outside OpenShift via a route resource.
 
@@ -30,7 +30,7 @@ The `src/main/fabric8/deployment.yml` deployment definition snipt contains these
        - name: ACTIVEMQ_POOL_MAX_CONNECTIONS
          value: 10
 
-You may adapt these environment variables values according to your xPaaS AMQ broker instance.
+You may adapt these environment variables values according to your AMQ xPaaS broker instance.
 
 ### Building
 
