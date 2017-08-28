@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Beans and Processors -->
+    <bean
+        class="com.github.jeannyil.fis.bean.InformationBean" id="informationBean"/>
+    <bean
+        class="com.github.jeannyil.fis.processor.PrepareHttpResponseProcessor" id="prepareHttpResponseProcessor"/>
+    <bean
+        class="com.github.jeannyil.fis.processor.JmsTransactionBatchProcessor" id="jmsTransactionBatchProcessor"/>
+    <bean
+        class="com.github.jeannyil.fis.processor.JmsSendPropertiesProcessor" id="jmsSendPropertiesProcessor">
+        <property name="messageCount" value="${default.message.count}"/>
+        <property name="transactionBatchSize" value="${default.transaction.batch.size}"/>
+        <property name="transacted" value="${default.transacted}"/>
+        <property name="messageSize" value="${default.message.size}"/>
+        <property name="msgTTL" value="${default.message.ttl}"/>
+        <property name="persistent" value="${default.persistent}"/>
+    </bean>
+
+</beans>
