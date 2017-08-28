@@ -22,5 +22,5 @@ spec:
             value: 10
           ports:
           - containerPort: 9090
-            name: "jms-message-producer-route"
+            name: "camel"
             protocol: "TCP"

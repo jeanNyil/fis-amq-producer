@@ -1,5 +1,5 @@
 spec:
   ports:
-  - name: "fis-amq-producer-http"
+  - name: "http"
     port: 80  
     targetPort: 9090
