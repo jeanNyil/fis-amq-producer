@@ -2,6 +2,35 @@
 
 This project contains a FIS Spring-Boot application that connects to an A-MQ xPaaS message broker and use Camel to 
 produce transacted or non-transacted messages.
+The application is exposed outside OpenShift via a route resource.
+
+### Customizing the exposed OpenShift route
+
+The `src/main/fabric8/route.yml` route definition snipet contains:
+
+	spec:
+	  host: jms-service.192.168.99.100.nip.io
+	  to:
+	    kind: Service
+	    name: fis-amq-producer
+
+You may need to customize the exposed `host` FQDN according to your OpenShift environment.
+
+### Customizing the xPaaS AMQ broker connection parameters
+
+The `src/main/fabric8/deployment.yml` deployment definition snipt contains these environment variables:
+
+	env:
+       - name: ACTIVEMQ_SERVICE_NAME
+         value: amq63-broker-amq-tcp
+       - name: ACTIVEMQ_BROKER_USERNAME
+         value: amq
+       - name: ACTIVEMQ_BROKER_PASSWORD
+         value: amq@ocp
+       - name: ACTIVEMQ_POOL_MAX_CONNECTIONS
+         value: 10
+
+You may adapt these environment variables values according to your xPaaS AMQ broker instance.
 
 ### Building
 
@@ -23,6 +52,10 @@ Then the following command will package your app and run it on OpenShift:
 To list all the running pods:
 
     oc get pods
+    
+To list the application route:
+
+	oc get route fis-amq-producer
 
 Then find the name of the pod that runs this application, and output the logs from the running pods with:
 
@@ -30,15 +63,6 @@ Then find the name of the pod that runs this application, and output the logs fr
 
 You can also use the openshift [web console](https://docs.openshift.com/enterprise/3.1/getting_started/developers/developers_console.html#tutorial-video) to manage the
 running pods, and view logs and much more.
-
-### Integration Testing
-
-The example includes a [fabric8 arquillian](https://github.com/fabric8io/fabric8/tree/v2.2.170.redhat/components/fabric8-arquillian) OpenShift Integration Test. 
-Once the container image has been built and deployed in OpenShift, the integration test can be run with:
-
-    mvn test -Dtest=*KT
-
-The test is disabled by default and has to be enabled using `-Dtest`. Open Source Community documentation at [Integration Testing](https://fabric8.io/guide/testing.html) and [Fabric8 Arquillian Extension](https://fabric8.io/guide/arquillian.html) provide more information on writing full fledged black box integration tests for OpenShift. 
 
 ### Testing the application
 
