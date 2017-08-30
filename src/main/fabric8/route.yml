@@ -1,5 +1,8 @@
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 30m
 spec:
-  host: jms-service.192.168.99.100.nip.io
+  host: jms-service.apps.ocp.rhlab.ovh
   to:
     kind: Service
     name: fis-amq-producer
