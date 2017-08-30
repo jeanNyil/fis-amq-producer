@@ -4,17 +4,27 @@ This project contains a FIS 2.0 Spring-Boot application that connects to an A-MQ
 produce transacted or non-transacted messages.
 The application is exposed outside OpenShift via a route resource.
 
+### Prerequisites
+
+It is assumed that:
+- OpenShift platform is already running, if not you can find details how to [Install OpenShift at your site](https://docs.openshift.com/container-platform/3.5/install_config/index.html) or setup a [local OpenShift cluster using the CDK](https://access.redhat.com/documentation/en-us/red_hat_container_development_kit/3.1/html/getting_started_guide/index)
+- Your system is configured for Fabric8 Maven Workflow, if not you can find a [Get Started Guide](https://access.redhat.com/documentation/en/red-hat-jboss-middleware-for-openshift/3/single/red-hat-jboss-fuse-integration-services-20-for-openshift/)
+- The Red Hat JBoss A-MQ xPaaS product should already be installed and running on your OpenShift installation, one simple way to run a A-MQ service is following the documentation of the A-MQ xPaaS image for OpenShift related to the `amq63-basic` template. Use the `ACTIVEMQ_SERVICE_NAME` environment variable on the deployment configuration to configure the service hosting the AMQ broker.
+
 ### Customizing the exposed OpenShift route
 
 The `src/main/fabric8/route.yml` route definition snipet contains:
 
+	metadata:
+	  annotations:
+	    haproxy.router.openshift.io/timeout: 30m
 	spec:
-	  host: jms-service.192.168.99.100.nip.io
+	  host: jms-service.apps.ocp.rhlab.ovh
 	  to:
 	    kind: Service
 	    name: fis-amq-producer
 
-You may need to customize the exposed `host` FQDN according to your OpenShift environment.
+You have to customize the exposed `host` FQDN according to your OpenShift environment.
 
 ### Customizing the xPaaS AMQ broker connection parameters
 
@@ -40,12 +50,7 @@ The project can be built with
 
 ### Running the application in OpenShift
 
-It is assumed that:
-- OpenShift platform is already running, if not you can find details how to [Install OpenShift at your site](https://docs.openshift.com/container-platform/3.5/install_config/index.html) or setup a [local OpenShift cluster using the CDK](https://access.redhat.com/documentation/en-us/red_hat_container_development_kit/3.1/html/getting_started_guide/index)
-- Your system is configured for Fabric8 Maven Workflow, if not you can find a [Get Started Guide](https://access.redhat.com/documentation/en/red-hat-jboss-middleware-for-openshift/3/single/red-hat-jboss-fuse-integration-services-20-for-openshift/)
-- The Red Hat JBoss A-MQ xPaaS product should already be installed and running on your OpenShift installation, one simple way to run a A-MQ service is following the documentation of the A-MQ xPaaS image for OpenShift related to the `amq63-basic` template. Use the `ACTIVEMQ_SERVICE_NAME` environment variable on the deployment configuration to configure the service hosting the AMQ broker.
-
-Then the following command will package your app and run it on OpenShift:
+The following command will package your app and run it on OpenShift:
 
     mvn fabric8:deploy
 
@@ -81,4 +86,4 @@ The application can be tested from any web browser or using the `curl` and `HTTP
 	[transactionBatchSize                  N] - use to send transaction batches of size N; default 10
 	
 	Example:
-	http --timeout 120 'http://jms-service.192.168.99.100.nip.io/produceJmsMessage?destination=queue:TRANSACTED.TEST1&messageCount=3000&transactionBatchSize=100'
+	http --timeout=120 'http://jms-service.192.168.99.100.nip.io/produceJmsMessage?destination=queue:TRANSACTED.TEST1&messageCount=50000&transactionBatchSize=100'
