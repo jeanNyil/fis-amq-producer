@@ -54,7 +54,7 @@ public class InformationBean {
 			"[transacted                 true | false] - use transaction in sending JMS messages; default true\n" +
 			"[transactionBatchSize                  N] - use to send transaction batches of size N; default 10\n\n" +
 			"Example:\n" + 
-			"http --timeout 120 'http://jms-service.192.168.99.100.nip.io/produceJmsMessage?destination=queue:TRANSACTED.TEST1&messageCount=3000&transactionBatchSize=100'\n";
+			"http --timeout=120 'http://jms-service.apps.ocp.rhlab.ovh/producejmsmessage?destination=queue:TRANSACTED.TEST1&messageCount=50000&transactionBatchSize=100'\n";
 		return usage;
 	}
 }
