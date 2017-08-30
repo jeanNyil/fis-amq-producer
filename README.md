@@ -86,4 +86,4 @@ The application can be tested from any web browser or using the `curl` and `HTTP
 	[transactionBatchSize                  N] - use to send transaction batches of size N; default 10
 	
 	Example:
-	http --timeout=120 'http://jms-service.192.168.99.100.nip.io/produceJmsMessage?destination=queue:TRANSACTED.TEST1&messageCount=50000&transactionBatchSize=100'
+	http --timeout=120 'http://jms-service.apps.ocp.rhlab.ovh/producejmsmessage?destination=queue:TRANSACTED.TEST1&messageCount=50000&transactionBatchSize=100'
